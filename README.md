@@ -14,23 +14,23 @@ This is an example of the applications with the gravity force :
 ```javascript
 this.Gravity = function(body) {
 
-		let dist_x = abs(body.x - this.x)
-		let dist_y = abs(body.y - this.y)
-		let dist = sqrt(dist_x^2 + dist_y^2) + 10
+	let dist_x = abs(body.x - this.x)
+	let dist_y = abs(body.y - this.y)
+	let dist = sqrt(dist_x^2 + dist_y^2) + 10
 
-		let LS = 100000000 // 2,998 * 10e+8
-		let G = 10 //6.7 * 10e-11 
-		
-		// G * (ma * mb)/(r^2)
-		let force = G * ((body.mass * this.mass) / (dist^2))
+	let LS = 100000000 // 2,998 * 10e+8
+	let G = 10 //6.7 * 10e-11 
 
-		if (force > LS) { force = LS }
+	// G * (ma * mb)/(r^2)
+	let force = G * ((body.mass * this.mass) / (dist^2))
 
-		this.x += ((body.x - this.x) / dist) * force
-		this.y += ((body.y - this.y) / dist) * force
+	if (force > LS) { force = LS }
 
-		body.x += ((this.x - body.x) / dist) * force
-		body.y += ((this.y - body.y) / dist) * force
-		
-	}
+	this.x += ((body.x - this.x) / dist) * force
+	this.y += ((body.y - this.y) / dist) * force
+
+	body.x += ((this.x - body.x) / dist) * force
+	body.y += ((this.y - body.y) / dist) * force
+
+}
   ```
