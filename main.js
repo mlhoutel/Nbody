@@ -1,5 +1,5 @@
 var NB = 3
-var G = 10
+var G = 4
 var LS = 6
 var TS = 200
 var system
