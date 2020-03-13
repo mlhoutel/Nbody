@@ -18,7 +18,9 @@ this.Gravity = function(body) {
 
 		let LS = 100000000 // 2,998 * 10e+8
 		let G = 10 //6.7 * 10e-11 
-		force = G * ((body.mass * this.mass) / (dist^2)) // G * (ma * mb)/(r^2)
+		
+		// G * (ma * mb)/(r^2)
+		let force = G * ((body.mass * this.mass) / (dist^2))
 
 		if (force > LS) { force = LS }
 
