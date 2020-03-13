@@ -1,10 +1,18 @@
-var nb_body = 3
+var NB = 3
 var G = 10
-var LS = 1
+var LS = 6
+var TS = 200
 var system
 
+var cwidth = 1200
+var cheight = 800
+
+var reset;
+var pause;
+var paused = false;
+
 function setup() {
-	createCanvas(1200, 800)
+	createCanvas(cwidth, cheight)
 
 	textSize(15);
 
@@ -12,24 +20,59 @@ function setup() {
   	//NBtext = createInput('3');
 
 	Gslider = createSlider(0, 20, 10);
-	Gslider.position(60, 10);
+	Gslider.position(50, 10);
 	Gslider.style('width', '300px')
 
   	LSslider = createSlider(0, 10, 1);
-	LSslider.position(60, 30);
+	LSslider.position(50, 35);
 	LSslider.style('width', '300px')
 
+  	TSslider = createSlider(0, 1000, 300);
+	TSslider.position(50, 60);
+	TSslider.style('width', '300px')
+
+  	NBslider = createSlider(0, 30, 3);
+	NBslider.position(cwidth - 400, 10, 60);
+	NBslider.style('width', '300px')
+
+	reset = createButton('&#8634;');
+	reset.position(cwidth - 35, 10);
+	reset.style("height","40px")
+	reset.style("width","40px")
+	reset.style("font-size: 2em")
+	reset.mousePressed(Reset);
+
+	pause = createButton('&#10074;&#10074;');
+	pause.position(cwidth - 80, 10);
+	pause.style("height","40px")
+	pause.style("width","40px")
+	pause.style("font-size: 1.5em")
+	pause.mousePressed(Pause);
+
+	Reset()
+}
+
+function Pause() {
+	if (paused) {
+		paused = false
+		pause.elt.innerHTML = '&#10074;&#10074;'
+	} else {
+		paused = true
+		pause.elt.innerHTML = '&#9658;'
+	}
+}
+
+function Reset() {
 	system = new System()
 
-	for (var i = 0; i < 3; i++)
+	NB = NBslider.value()
+	
+	for (var i = 0; i < NB; i++)
 	{
-		system.add(new Body(this.RandomInt(1000), this.RandomInt(800), randomColor()))
+		system.add(new Body(RandomInt(1000), RandomInt(800), randomColor()))
 	}
 
 	system.setTupples()
-
-	
-	console.log(system.tupples)
 }
 
 function RandomInt(max) {
@@ -42,11 +85,21 @@ function randomColor() {
 function draw() {
 	background(0);
 
+	textSize(15);
 	fill(255)
 	strokeWeight(2)
 
-	text('G', 10, 20);
-	text('LS', 10, 40);
+	text(' G', 10, 20);
+	text('LS', 10, 45);
+	text('TS', 10, 70);
+
+
+	text(Gslider.value() + '.10e-11', 360, 20);
+	text(LSslider.value() + '.10e+8', 360, 45);
+	text(TSslider.value() + '', 360, 70);
+
+	textSize(20);
+	text('Bodies (reset to apply) : ' + NBslider.value(), cwidth - 370, 50);
 
 	system.Step()
 	system.Draw()
@@ -80,16 +133,24 @@ function System() {
 	}
 
 	this.Step = function() {
-		for (var i = 0; i < this.bodies.length; i++) {
-			this.bodies[i].Step()
-		}
 
-		for (var i = 0; i < this.tupples.length; i++) {
-			this.tupples[i][0].Gravity(this.tupples[i][1])
+		if (!paused)
+		{
+			for (var i = 0; i < this.bodies.length; i++) {
+				this.bodies[i].Step()
+			}
+
+			for (var i = 0; i < this.tupples.length; i++) {
+				this.tupples[i][0].Gravity(this.tupples[i][1])
+			}
 		}
 	}
 
 	this.Draw = function() {
+
+		G = Gslider.value()
+		LS = LSslider.value()
+		TS = TSslider.value()
 
 		strokeWeight(3)
 
@@ -133,6 +194,8 @@ function Body(x, y, color) {
 
 		this.x_last = temp_x
 		this.y_last = temp_y
+
+		while (this.trail.length > TS) { this.trail.shift() }
 
 		this.trail.push([this.x, this.y])
 	}
