@@ -1,8 +1,24 @@
-
+var nb_body = 3
+var G = 10
+var LS = 1
 var system
 
 function setup() {
 	createCanvas(1200, 800)
+
+	textSize(15);
+
+
+  	//NBtext = createInput('3');
+
+	Gslider = createSlider(0, 20, 10);
+	Gslider.position(60, 10);
+	Gslider.style('width', '300px')
+
+  	LSslider = createSlider(0, 10, 1);
+	LSslider.position(60, 30);
+	LSslider.style('width', '300px')
+
 	system = new System()
 
 	for (var i = 0; i < 3; i++)
@@ -25,6 +41,12 @@ function randomColor() {
 
 function draw() {
 	background(0);
+
+	fill(255)
+	strokeWeight(2)
+
+	text('G', 10, 20);
+	text('LS', 10, 40);
 
 	system.Step()
 	system.Draw()
@@ -68,13 +90,15 @@ function System() {
 	}
 
 	this.Draw = function() {
+
+		strokeWeight(3)
+
 		for (var i = 0; i < this.bodies.length; i++) {
 			this.bodies[i].Draw()
 		}
 
 		for (var i = 0; i < this.tupples.length; i++) {
 			stroke(100)
-			strokeWeight(3)
 			//line(this.tupples[i][0].x, this.tupples[i][0].y, this.tupples[i][1].x, this.tupples[i][1].y)
 		}
 	}
@@ -130,15 +154,13 @@ function Body(x, y, color) {
 		let dist_y = abs(body.y - this.y)
 		let dist = sqrt(dist_x^2 + dist_y^2) + 10
 
-		// G * (ma * mb)/(r^2)
-		// force = 9.81 * ((body.mass * this.mass) / (dist^2))
+		let tempLS = LS * 100000000 // 2,998 * 10e+8
+		let tempG = G //6.7 * 10e-11 
 		
-		// force = 6.673 * 10e-11 * body.mass * this.mass * dist / dist^3
-		let LS = 100000000
-		let G = 10 //6.7 * 10e-11 
-		force = G * ((body.mass * this.mass) / (dist^2))
+		// G * (ma * mb)/(r^2)
+		let force = tempG * ((body.mass * this.mass) / (dist^2))
 
-		if (force > LS) { force = LS }
+		if (force > tempLS) { force = tempLS }
 
 		this.x += ((body.x - this.x) / dist) * force
 		this.y += ((body.y - this.y) / dist) * force
