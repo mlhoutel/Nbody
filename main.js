@@ -4,8 +4,9 @@ var LS = 6
 var TS = 200
 var system
 
-var cwidth = 1200
-var cheight = 800
+
+var cwidth = window.screen.width - 100
+var cheight = window.screen.height - 200
 
 var reset;
 var pause;
@@ -66,10 +67,10 @@ function Reset() {
 	system = new System()
 
 	NB = NBslider.value()
-	
+
 	for (var i = 0; i < NB; i++)
 	{
-		system.add(new Body(RandomInt(1000), RandomInt(800), randomColor()))
+		system.add(new Body(RandomInt(cwidth), RandomInt(cheight), randomColor()))
 	}
 
 	system.setTupples()
