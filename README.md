@@ -4,6 +4,9 @@
 ## Basis
 This is a small project I made to test and train on the physic simulation method of the **Verlet integration**.
 
+You can go [there (https://mlhoutel.github.io/Nbody/) ](https://mlhoutel.github.io/Nbody/) to try it, have fun :wink:
+https://mlhoutel.github.io/Nbody/
+
 ## Explanations
 With the Euler method, you have the positions of the body and the vectors of speed to calculate the positions. With the Verlet integration method, it's way simpler. You don't have to recalculate the vectors of speed, you only have to save the last position and make the difference to compute the next position.
 
