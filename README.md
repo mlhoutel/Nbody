@@ -16,13 +16,9 @@ this.Gravity = function(body) {
 		let dist_y = abs(body.y - this.y)
 		let dist = sqrt(dist_x^2 + dist_y^2) + 10
 
-		// G * (ma * mb)/(r^2)
-		// force = 9.81 * ((body.mass * this.mass) / (dist^2))
-		
-		// force = 6.673 * 10e-11 * body.mass * this.mass * dist / dist^3
-		let LS = 100000000
+		let LS = 100000000 // 2,998 * 10e+8
 		let G = 10 //6.7 * 10e-11 
-		force = G * ((body.mass * this.mass) / (dist^2))
+		force = G * ((body.mass * this.mass) / (dist^2)) // G * (ma * mb)/(r^2)
 
 		if (force > LS) { force = LS }
 
